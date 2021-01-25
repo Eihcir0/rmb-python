@@ -1,37 +1,57 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 
-import RobotMonkeyButlersListFiltersContainer from '~/RobotMonkeyButlers/containers/RobotMonkeyButlersListFiltersContainer'
-import RobotMonkeyButlersListContainer from '~/RobotMonkeyButlers/containers/RobotMonkeyButlersListContainer'
+import { hasPermission, joinUrl, scrollToTop } from '~/helpers'
+
 //(^_^)section:start:List Headers(^_^)
-import Header from '~/RobotMonkeyButlers/components/RobotMonkeyButlersListHeader'
-
+import PageHeader from '~/Shared/components/PageHeader'
+import { AddButton } from '~/Shared/components/AddButton'
 const HEADER_TITLE = 'Robot Monkey Butlers'
 //(^_^)section:end(^_^)
+import { RobotMonkeyButlersListContainer } from '~/RobotMonkeyButlers/containers/RobotMonkeyButlersListContainer'
+import { RobotMonkeyButlersListFiltersContainer } from '~/RobotMonkeyButlers/containers/RobotMonkeyButlersListFiltersContainer'
 
+const FORM_ID = 'robotmonkeybutlers-list-filters'
+
+const hasReadPermissions = hasPermission('bulkuploads.add_bulkuploadrequest')
 
 class RobotMonkeyButlersListScene extends Component {
 
-	componentDidMount() {
-		window.scrollTo(0,0)
+	static propTypes = {
+		history: PropTypes.object.isRequired,
+		match: PropTypes.object.isRequired,
 	}
 
-	handleAddNew = () => {
-		this.props.router.push(`${this.props.location.pathname}add/`)
+	componentDidMount() {
+		const { match, history } = this.props
+
+		if (!hasReadPermissions) {
+			history.push(joinUrl(match.params.organizationSlug, 'dashboard'))
+		}
+
+		scrollToTop()
 	}
 
 	render() {
-
 		return (
-			<div>
+			<Fragment>
 				{/* (^_^)section:start:List Headers(^_^) */}
-				<Header onAddNew={this.handleAddNew} title={HEADER_TITLE} />
+				<PageHeader title={HEADER_TITLE}>
+					<AddButton
+						orgSlug={this.props.match.params.organizationSlug}
+						path={['robotmonkeybutlers', 'add']}
+					/>
+				</PageHeader>
 				{/* (^_^)section:end(^_^) */}
-				<RobotMonkeyButlersListFiltersContainer/>
-				<RobotMonkeyButlersListContainer/>
-			</div>
+				<RobotMonkeyButlersListFiltersContainer formId={FORM_ID} />
+				<RobotMonkeyButlersListContainer
+					location={this.props.location}
+					formId={FORM_ID}
+				/>
+			</Fragment>
 		)
 	}
 }
 
-export default RobotMonkeyButlersListScene
+export { RobotMonkeyButlersListScene }
 //Created by Robot.Monkey.Butlers MONKEY_DATE

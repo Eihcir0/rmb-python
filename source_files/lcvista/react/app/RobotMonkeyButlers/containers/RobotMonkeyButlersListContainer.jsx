@@ -1,13 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { getFormValues } from 'redux-form'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+import queryString from 'query-string'
+import { withRouter } from 'react-router-dom'
 
 import R from 'ramda'
-
-
-// import { getAuthenticatedPerson, } from '~/Auth/selectors'
 
 import { setSuccessAlert } from '~/Alerts/helpers'
 import DeleteConfirmModal from '~/Shared/containers/DeleteConfirmModal'
@@ -16,24 +13,25 @@ import Transaction from '~/Models/helpers/Transaction'
 import { bindActionCreators } from 'redux'
 import * as modelActions from '~/Models/actions'
 
-import RobotMonkeyButlersListTableRow from '~/RobotMonkeyButlers/components/RobotMonkeyButlersListTableRow'
+import { RobotMonkeyButlersListRow } from '~/RobotMonkeyButlers/components/RobotMonkeyButlersListRow'
+import SearchField from '~/Shared/components/filterFields/SearchField'
+import Card from '~/Shared/containers/Card'
 
 
-//(^_^)config:start(^_^)
-const ENDPOINT = 'robotmonkeybutlers'
-const TABLE_COLUMNS = [['Name', 'name'], ['Management', undefined]]
-//(^_^)config:end(^_^)
-
-
-
-class RobotMonkeyButlersListContainer extends Component {
-
+class RobotMonkeyButlersListContainer__Unconnected extends Component {
 	static propTypes = {
-		// organization: PropTypes.object.isRequired,
-		// reportConfiguration: PropTypes.oneOfType([
-		// 	PropTypes.bool,
-		// 	PropTypes.object,
-		// ]),
+		formId: PropTypes.string.isRequired,
+
+		//mstp:
+		paginatedTableTxn: PropTypes.object.isRequired,
+		searchValue: PropTypes.string,  // used for initialValues on search
+	}
+
+	static defaultProps = {
+		tableColumns: [
+			{ label:'Id', dataKey: 'id'},
+		],
+		initialOrdering: '-id',
 	}
 
 	state = {
@@ -49,92 +47,81 @@ class RobotMonkeyButlersListContainer extends Component {
 	}
 
 	handleDelete = () => {
-		const robotMonkeyButler = this.state.proposedForDeletion
+		const toDelete = this.state.proposedForDeletion
 		this.setState({ proposedForDeletion: null })
-		this.props.actions.invalidateEndpoint('robotmonkeybutlers')
-		setSuccessAlert(
-			robotMonkeyButler.name,
-			{
-				verb: 'deleted',
-			}
-		)
+		this.props.actions.invalidateEndpoint('programs')
+		setSuccessAlert(toDelete.name, {
+			verb: 'deleted',
+		})
 	}
 
 	render() {
 		const {
-			organizationSlug,
+			initialOrdering,
+			location,
+			orgSlug,
+			paginatedTableTxn,
+			searchValue,
 			tableColumns,
-			paginatedTableTransaction,
+			tableOptions,
 		} = this.props
 
 		const { proposedForDeletion } = this.state
 
-		const handlers = [
-			['Delete', this.handleDeleteRequest]
-		]
 		return (
-			<Fragment>
+			<Card>
+				<SearchField
+					extraClassName="col-lg-6"
+					initialValues={{ search: searchValue}}
+				/>
 				<PaginatedTableContainer
 					columns={tableColumns}
-					initialOrdering="name"
+					initialOrdering={initialOrdering}
 					location={location}
-					rowComponent={RobotMonkeyButlersListTableRow}
+					rowComponent={RobotMonkeyButlersListRow}
 					rowProps={{
-						location,
-						organizationSlug,
-						handlers,
+						onDelete: this.handleDeleteRequest,
+						orgSlug,
 					}}
 					tableKey="RobotMonkeyButlersListTable"
-					transaction={paginatedTableTransaction}
+					tableOptions={tableOptions}
+					transaction={paginatedTableTxn}
 				/>
 				{proposedForDeletion && (
 					<DeleteConfirmModal
-						endpoint="robotmonkeybutlers"
+						endpoint={'programs'}
 						objectId={proposedForDeletion.id}
 						onCancel={this.handleCancelDelete}
 						onDelete={this.handleDelete}
 					>
 						<div className="p-a-1">
-							<h5>
-								Delete Robot Monkey Butler?
-							</h5>
-							<p>This action will delete{' '}
-							<strong>
-								{proposedForDeletion.name}.
-							</strong></p>
-							<p>This action cannot be undone.</p>
+							<p>
+								This action will delete{' '}
+								<strong>{proposedForDeletion.name}.</strong>{' '}
+								This action cannot be undone.
+							</p>
 						</div>
 					</DeleteConfirmModal>
 				)}
-			</Fragment>
+			</Card>
 		)
 	}
 }
 
-const FORM_ID = 'RobotMonkeyButlersListFilters'  // Find a better way to do this -- pass down from scene?
-
-const mapStateToProps = (state, { params: { organizationSlug } }) => {
-	const filterValues = getFormValues(FORM_ID)(state) || {}
-
-	// add filters from url
-	const txnParams = {
-		search: filterValues.search,
+const mapStateToProps = (_, { location, match }) => {
+	const query = queryString.parse(location.search)
+	const params = {
+		catalogs__in: query.catalogs // NOTE: This value is not sanitized!
 	}
+	const paginatedTableTxn = new Transaction('programs', params)
 
-	const paginatedTableTransaction = new Transaction(
-		ENDPOINT,
-		txnParams,
-	)
+	const orgSlug = R.path(['params', 'organizationSlug'], match)
 
-	const tableColumns = TABLE_COLUMNS.reduce((acc, curr) => {
-		acc.push({ label: curr[0], dataKey: curr[1]})
-		return acc
-	}, [])
-
+	const searchValue = query.search
 	return {
-		paginatedTableTransaction,
-		tableColumns,
-		organizationSlug,
+		orgSlug,
+		paginatedTableTxn,
+		searchValue,
 	}
 }
 
@@ -144,12 +131,11 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-
 const wrappers = R.compose(
 	withRouter,
-	connect(mapStateToProps, mapDispatchToProps),
+	connect(mapStateToProps, mapDispatchToProps)
 )
 
-export default wrappers(RobotMonkeyButlersListContainer)
+const RobotMonkeyButlersListContainer = wrappers(RobotMonkeyButlersListContainer__Unconnected)
 
-//Created by Robot.Monkey.Butler MONKEY_DATE
+export { RobotMonkeyButlersListContainer }

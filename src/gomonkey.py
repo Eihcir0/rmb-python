@@ -23,8 +23,10 @@ def launch_new_project():
 
     try:
         shutil.move('/Users/lcvista/Downloads/config.json', '/Users/lcvista/dev/rmb/config/config.json')
+        # shutil.copy('/Users/lcvista/Downloads/config.json', '/Users/lcvista/dev/rmb/config/config.json')
     except Exception as e:
         print('Error retrieving config file: {}'.format(str(e)))
+        # print("shutil.copy('/Users/lcvista/Downloads/config.json', '/Users/lcvista/dev/rmb/config/config.json')")
         print("shutil.move('/Users/lcvista/Downloads/config.json', '/Users/lcvista/dev/rmb/config/config.json')")
         import pdb; pdb.set_trace()
     f = open('/Users/lcvista/dev/rmb/config/config.json')
