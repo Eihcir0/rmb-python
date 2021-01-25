@@ -1,0 +1,173 @@
+<style>
+  body {
+  padding-top: 80px;
+  font-family: monaco, monospace;
+  background-size: cover;
+  text-align: center;
+}
+h1, h2 {
+  display: inline-block;
+  background: #fff;
+}
+h1 {
+  font-size: 30px
+}
+h2 {
+  font-size: 20px;
+}
+span {
+  background: #fd0;
+}
+.process {
+  display: flex;
+  background: lightblue;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 6px
+
+}
+.process-label {
+  margin-right: 2rem;
+}
+.task {
+  background: lightgreen;
+  padding: 0.5rem;
+  border: 1px solid black;
+}
+
+.command {
+  background: lightyellow;
+  padding: 0.5rem;
+  border: 1px solid black;
+}
+</style>
+<div>
+  <div class="process">
+    <div class="left-side-process">
+      <div class="process-label">
+        Back End
+        </div>
+      <input type="checkbox" name="vehicle1" value="Bike">
+    </div>
+    <div class="right-side-process">
+      <div class="task">
+        <div>Database Table</div>
+        <input type="checkbox" name="vehicle1" value="Bike">
+      </div>
+      <div class="command">
+        <div>MakeMigrations</div>
+        <input type="checkbox" name="vehicle1" value="Bike">
+      </div>
+      <div class="command">
+        <div>Migrate</div>
+        <input type="checkbox" name="vehicle1" value="Bike">
+      </div>
+      <div class="task">
+        <div>API Endpoint</div>
+        <input type="checkbox" name="vehicle1" value="Bike">
+      </div>
+    </div>
+
+  </div>
+  <div class="process">
+    <div class="left-side-process">
+      <div class="process-label">
+        Front End
+        </div>
+      <input type="checkbox" name="vehicle1" value="Bike">
+    </div>
+    <div class="right-side-process">
+
+      <div class="process">
+        <div class="left-side-process">
+          <div class="process-label">
+            List Page
+          </div>
+          <input type="checkbox" name="vehicle1" value="Bike">
+        </div>
+
+        <div class="right-side-process">
+          <div class="task">
+            <div>List Scene</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+
+          <div class="task">
+            <div>Headers</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+
+          <div class="process">
+            <div class="left-side-process">
+              <div class="process-label">
+                Filters
+              </div>
+              <input type="checkbox" name="vehicle1" value="Bike">
+            </div>
+            <div class="right-side-process">
+              <div class="task">
+                <div>Filters Container</div>
+                <input type="checkbox" name="vehicle1" value="Bike">
+              </div>
+              <div class="task">
+                <div>Filters Form</div>
+                <input type="checkbox" name="vehicle1" value="Bike">
+              </div>
+            </div>
+          </div>
+          <div class="process">
+            <div class="left-side-process">
+              <div class="process-label">
+                List Table
+              </div>
+              <input type="checkbox" name="vehicle1" value="Bike">
+            </div>
+            <div class="right-side-process">
+              <div class="task">
+                <div>List Container</div>
+                <input type="checkbox" name="vehicle1" value="Bike">
+              </div>
+              <div class="task">
+                <div>List Row</div>
+                <input type="checkbox" name="vehicle1" value="Bike">
+              </div>
+            </div>
+          </div>
+          <div class="task">
+            <div>Add React Route</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+        </div>
+      </div>
+            <div class="process">
+        <div class="left-side-process">
+          <div class="process-label">
+            Edit Page
+          </div>
+          <input type="checkbox" name="vehicle1" value="Bike">
+        </div>
+
+        <div class="right-side-process">
+          <div class="task">
+            <div>Edit Scene</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+
+          <div class="task">
+            <div>Form Container</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+
+          <div class="task">
+            <div>Form</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+           <div class="task">
+            <div>Add React Route</div>
+            <input type="checkbox" name="vehicle1" value="Bike">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
