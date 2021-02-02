@@ -79,4 +79,4 @@ const wrappers = R.compose(
 
 
 export default wrappers(FiltersContainer)
-//Created by Robot.Monkey.Butlers MONKEY_DATE
+//Created by Robot.Monkey.Butler MONKEY_DATE

@@ -29,7 +29,8 @@ class RobotMonkeyButlersListContainer__Unconnected extends Component {
 
 	static defaultProps = {
 		tableColumns: [
-			{ label:'Id', dataKey: 'id'},
+			{ label:'Id', dataKey: 'id' },
+			{ label:'' },
 		],
 		initialOrdering: '-id',
 	}
